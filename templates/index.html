@@ -2,24 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Locations</title>
 </head>
 <body>
-    <h2>Locations</h2>
-    <form action="/add" method="post">
-        <input type="text" name="name" placeholder="Location Name" required>
-        <input type="text" name="description" placeholder="Description">
-        <button type="submit">Add Location</button>
+    <h2>Add Location</h2>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(size=32) }}<br>
+            {% for error in form.name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.description.label }}<br>
+            {{ form.description(size=64) }}<br>
+            {% for error in form.description.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
     </form>
+    <hr>
     <ul>
         {% for location in locations %}
-        <form action="/delete/{{ location.id }}" method="post">
-            <li>{{ location.name }} - {{ location.description }} 
-                <a href="/update/{{ location.id }}">Edit</a>
-                <button type="submit">Delete</button>
-            </li>
-        </form>
+        <li>{{ location.name }} - {{ location.description }} 
+            <a href="/update/{{ location.id }}">Edit</a>
+            <form action="/delete/{{ location.id }}" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" style="background-color: red; color: white;">Delete Location</button>
+            </form>
+        </li>
         {% endfor %}
     </ul>
 </body>

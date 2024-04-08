@@ -8,9 +8,22 @@
 <body>
     <h2>Update Location</h2>
     <form action="" method="post">
-        <input type="text" name="name" value="{{ location.name }}" required>
-        <input type="text" name="description" value="{{ location.description }}">
-        <button type="submit">Update Location</button>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(size=32) }}<br>
+            {% for error in form.name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.description.label }}<br>
+            {{ form.description(size=64) }}<br>
+            {% for error in form.description.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
     </form>
 </body>
 </html>
