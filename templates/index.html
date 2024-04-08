@@ -29,10 +29,7 @@
         {% for location in locations %}
         <li>{{ location.name }} - {{ location.description }} 
             <a href="/update/{{ location.id }}">Edit</a>
-            <form action="/delete/{{ location.id }}" method="post">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button type="submit" style="background-color: red; color: white;">Delete Location</button>
-            </form>
+            <a href="/delete/{{ location.id }}">Delete</a>
         </li>
         {% endfor %}
     </ul>
