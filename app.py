@@ -20,6 +20,9 @@ class LocationForm(FlaskForm):
     description = StringField('Description', validators=[Length(max=200)])
     submit = SubmitField('Submit')
 
+class DeleteForm(FlaskForm):
+    submit = SubmitField('Confirm Delete')
+    
 class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -60,12 +63,15 @@ def update_location(id):
         form.description.data = location.description
     return render_template('update.html', form=form)
 
-@app.route('/delete/<int:id>', methods=['POST'])
+@app.route('/delete/<int:id>', methods=['GET', 'POST'])
 def delete_location(id):
     location = Location.query.get_or_404(id)
-    db.session.delete(location)
-    db.session.commit()
-    return redirect(url_for('index'))
+    form = DeleteForm()
+    if form.validate_on_submit():
+        db.session.delete(location)
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('delete.html', form=form, location=location)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8001)
